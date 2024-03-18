@@ -1,0 +1,99 @@
+module main
+
+import os
+
+#flag -I/usr/include/gtk-4.0 -L/usr/lib64
+#flag -lgtk-4
+#flag -I/usr/include/glib-2.0 -L/usr/lib64
+#flag -I/lib64/glib-2.0/include -L/usr/lib64
+#flag -lglib-2.0
+#flag -I/usr/include/glib-2.0/gobject -L/usr/lib64
+#flag -lgobject-2.0
+#flag -I/usr/include/cairo -L/usr/lib64
+#flag -lcairo
+#flag -I/usr/include/pango-1.0 -L/usr/lib64
+#flag -lpango-1.0
+#flag -I/usr/include/harfbuzz -L/usr/lib64
+#flag -lharfbuzz
+#flag -I/usr/include/gdk-pixbuf-2.0 -L/usr/lib64
+#flag -I/usr/include/graphene-1.0 -L/usr/lib64
+#flag -I/lib64/graphene-1.0/include -L/usr/lib64
+#flag -lgraphene-1.0
+
+#include "gtk/gtk.h"
+#include "glib-object.h"
+#include "gio/gio.h"
+
+// GTK4
+pub struct C.gtk {}
+pub struct C.gtk_application {}
+pub struct C.gtk_widget {}
+pub struct C.gtk_window {}
+
+// GObject
+pub type G_callback = fn (voidptr)
+
+// Gio
+pub struct C.g_application {}
+pub enum G_application_flags {
+	g_application_flags_none
+	g_application_default_flags
+	g_application_is_service
+	g_application_is_launcher
+	g_application_handles_open
+	g_application_handles_command_line
+	g_application_send_environment
+	g_application_non_unique
+	g_application_can_override_app_id
+	g_application_allow_replacement
+	g_application_replace
+}
+
+// GTK 4
+fn C.gtk_application_new(&char, G_application_flags) &C.gtk_application
+fn C.gtk_application_window_new(&C.gtk_application) &C.gtk_widget
+fn C.gtk_window_set_child(&C.gtk_window, &C.gtk_widget)
+fn C.gtk_window_present(&C.gtk_window)
+fn C.gtk_button_new_with_label(&char) &C.gtk_widget
+fn C.gtk_window_close(&C.gtk_window)
+fn C.gtk_window_set_title(&C.gtk_window, &char)
+
+// GObject
+fn C.g_signal_connect(&C.gtk_application, &char, G_callback, voidptr)
+fn C.g_signal_connect_swapped(&C.gtk_widget, &char, G_callback, voidptr)
+
+// Gio
+fn C.g_application_run(&C.g_application, int, &&char) int
+
+fn convert_string_array_to_char_pointer_pointer(str_arr []string) &&char {
+	pre_ret := unsafe { vcalloc(sizeof(&char) * str_arr.len) }
+	for i, str in str_arr {
+		chars := str.str
+		unsafe {
+			pre_ret[i] = chars
+		}
+	}
+	return &pre_ret
+}
+
+fn on_activate(app &C.gtk_application) {
+	window := C.gtk_application_window_new(app)
+	button := C.gtk_button_new_with_label(c'Hello World!')
+	C.g_signal_connect_swapped(button, c'clicked', G_callback(C.gtk_window_close), window)
+	C.gtk_window_set_child(&C.gtk_window(window), button)
+	C.gtk_window_present(&C.gtk_window(window))
+	C.gtk_window_set_title(&C.gtk_window(window), c'My App')
+}
+
+fn main() {
+	println('Hello World!')
+	
+	app := C.gtk_application_new(c'com.example.GtkApplication', G_application_flags.g_application_flags_none)
+	C.g_signal_connect(app, c'activate', G_callback(on_activate), unsafe { nil })
+	state := C.g_application_run(&C.g_application(app), os.args.len, convert_string_array_to_char_pointer_pointer(os.args))
+	if state == 0 {
+		println('Success')
+	} else {
+		println('Failure')
+	}
+}

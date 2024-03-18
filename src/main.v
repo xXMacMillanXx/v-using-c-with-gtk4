@@ -14,13 +14,30 @@ import os
 #flag -I/lib64/graphene-1.0/include -L/usr/lib64
 #flag -lgraphene-1.0
 
+fn print_hello() {
+	println('Hello World!')
+}
+
 fn on_activate(app gtk.Application) {
 	window := gtk.application_window_new(app)
 	button := gtk.button_new_with_label('Hello World!')
-	glib.signal_connect_swapped(button.ref, 'clicked', unsafe { glib.G_callback(gtk.window_close) }, window.ref)
-	gtk.window_set_child(window.window(), button)
-	gtk.window_present(window.window())
+	box := gtk.box_new(gtk.Gtk_orientation.vertical, 0)
+
 	gtk.window_set_title(window.window(), 'My App')
+	gtk.window_set_default_size(window.window(), 320, 240)
+
+	gtk.widget_set_halign(box, gtk.Gtk_align.center)
+	gtk.widget_set_valign(box, gtk.Gtk_align.center)
+	
+	gtk.window_set_child(window.window(), box)
+
+	glib.signal_connect(button.ref, 'clicked', unsafe { glib.G_callback(print_hello) }, unsafe { nil })
+	glib.signal_connect_swapped(button.ref, 'clicked', unsafe { glib.G_callback(gtk.window_close) }, window.ref)
+
+	// gtk.window_set_child(window.window(), button)
+	gtk.box_append(box.box(), button)
+
+	gtk.window_present(window.window())
 }
 
 /*fn command_line(app glib.Application, cmd glib.CommandLine) int {
@@ -29,16 +46,21 @@ fn on_activate(app gtk.Application) {
 	return 0
 }*/
 
+// currently adding calls from https://docs.gtk.org/gtk4/getting_started.html
+// current step #packing
 fn main() {
-	println('Hello World!')
+	println('App started!')
 	
 	app := gtk.application_new('com.example.GtkApplication', glib.G_application_flags.flags_none)
 	glib.signal_connect(app.ref, 'activate', unsafe { glib.G_callback(on_activate) }, unsafe { nil })
 	//glib.signal_connect(app.ref, "command-line", unsafe { glib.G_callback(command_line) }, unsafe { nil });
 	state := glib.application_run(app.application(), os.args.len, os.args)
+	glib.object_unref(app.object())
+
 	if state == 0 {
 		println('Success')
 	} else {
 		println('Failure')
 	}
+	exit(state)
 }

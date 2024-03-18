@@ -4,6 +4,7 @@ module glib
 
 struct C.g_application {}
 struct C.g_application_command_line {}
+
 pub enum G_application_flags {
 	flags_none = 0
 	// default_flags = 0

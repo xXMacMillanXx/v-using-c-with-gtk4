@@ -20,22 +20,35 @@ fn print_hello() {
 
 fn on_activate(app gtk.Application) {
 	window := gtk.application_window_new(app)
-	button := gtk.button_new_with_label('Hello World!')
-	box := gtk.box_new(gtk.Gtk_orientation.vertical, 0)
+	mut button := gtk.button_new_with_label('Button 1')
+	//box := gtk.box_new(gtk.Gtk_orientation.vertical, 0)
+	grid := gtk.grid_new()
 
 	gtk.window_set_title(window.window(), 'My App')
 	gtk.window_set_default_size(window.window(), 320, 240)
 
-	gtk.widget_set_halign(box, gtk.Gtk_align.center)
-	gtk.widget_set_valign(box, gtk.Gtk_align.center)
+	//gtk.widget_set_halign(box, gtk.Gtk_align.center)
+	//gtk.widget_set_valign(box, gtk.Gtk_align.center)
 	
-	gtk.window_set_child(window.window(), box)
+	//gtk.window_set_child(window.window(), box)
 
+	gtk.window_set_child(window.window(), grid)
+	
 	glib.signal_connect(button.ref, 'clicked', unsafe { glib.G_callback(print_hello) }, unsafe { nil })
-	glib.signal_connect_swapped(button.ref, 'clicked', unsafe { glib.G_callback(gtk.window_close) }, window.ref)
 
-	// gtk.window_set_child(window.window(), button)
-	gtk.box_append(box.box(), button)
+	gtk.grid_attach(grid.grid(), button, 0, 0, 1, 1)
+
+	button = gtk.button_new_with_label('Button 2')
+	glib.signal_connect(button.ref, 'clicked', unsafe { glib.G_callback(print_hello) }, unsafe { nil })
+
+	gtk.grid_attach(grid.grid(), button, 1, 0, 1, 1)
+
+	button = gtk.button_new_with_label('Quit')
+	glib.signal_connect_swapped(button.ref, 'clicked', unsafe { glib.G_callback(gtk.window_destroy) }, window.ref)
+
+	//gtk.window_set_child(window.window(), button)
+	//gtk.box_append(box.box(), button)
+	gtk.grid_attach(grid.grid(), button, 0, 1, 2, 1)
 
 	gtk.window_present(window.window())
 }

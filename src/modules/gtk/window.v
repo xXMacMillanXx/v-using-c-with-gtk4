@@ -7,6 +7,7 @@ fn C.gtk_window_present(&C.gtk_window)
 fn C.gtk_window_close(&C.gtk_window)
 fn C.gtk_window_set_title(&C.gtk_window, &char)
 fn C.gtk_window_set_default_size(&C.gtk_window, int, int)
+fn C.gtk_window_destroy(&C.gtk_window)
 
 pub struct Window {
 	pub: ref &C.gtk_window
@@ -30,4 +31,8 @@ pub fn window_set_title(window Window, title string) {
 
 pub fn window_set_default_size(window Window, width int, height int) {
 	C.gtk_window_set_default_size(window.ref, width, height);
+}
+
+pub fn window_destroy(window Window) {
+	C.gtk_window_destroy(window.ref)
 }

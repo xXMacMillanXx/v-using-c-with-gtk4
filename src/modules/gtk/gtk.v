@@ -1,5 +1,9 @@
 module gtk
 
+// import gdk
+// import glib
+// import cairo
+
 #flag -I/usr/include/gtk-4.0 -L/usr/lib64
 #flag -lgtk-4
 #flag -I/usr/include/gdk-pixbuf-2.0 -L/usr/lib64
@@ -22,12 +26,6 @@ pub enum Gtk_align {
 	baseline_center = 5
 }
 
-fn C.gtk_button_new_with_label(&char) &C.gtk_widget
-
 fn init() {
 	// init module if neccessary
-}
-
-pub fn button_new_with_label(s string) Widget {
-	return Widget { C.gtk_button_new_with_label(s.str) }
 }

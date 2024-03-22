@@ -2,10 +2,9 @@ module main
 
 import gtk
 import glib
+// import cairo
 import os
 
-#flag -I/usr/include/cairo -L/usr/lib64
-#flag -lcairo
 #flag -I/usr/include/pango-1.0 -L/usr/lib64
 #flag -lpango-1.0
 #flag -I/usr/include/harfbuzz -L/usr/lib64
@@ -60,7 +59,7 @@ fn on_activate(app gtk.Application) {
 }*/
 
 // currently adding calls from https://docs.gtk.org/gtk4/getting_started.html
-// current step #packing
+// current step #drawing in response to input
 fn main() {
 	println('App started!')
 	

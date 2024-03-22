@@ -9,3 +9,5 @@ module glib
 fn init() {
 	// init module if necessary
 }
+
+type G_destroy_notify = voidptr

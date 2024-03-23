@@ -11,6 +11,7 @@ fn C.gtk_widget_get_height(&C.gtk_widget) int
 fn C.gtk_widget_queue_draw(&C.gtk_widget)
 fn C.gtk_widget_set_size_request(&C.gtk_widget, int, int)
 fn C.gtk_widget_add_controller(&C.gtk_widget, &C.gtk_event_controller)
+fn C.gtk_widget_set_visible(&C.gtk_widget, bool)
 
 pub struct Widget {
 	pub: ref &C.gtk_widget
@@ -74,4 +75,8 @@ pub fn set_size_request(widget Widget, width int, height int) {
 
 pub fn add_controller(widget Widget, controller EventController) {
 	C.gtk_widget_add_controller(widget.ref, controller.ref)
+}
+
+pub fn set_visible(widget Widget, visible bool) {
+	C.gtk_widget_set_visible(widget.ref, visible)
 }

@@ -6,8 +6,14 @@ module glib
 #flag -I/usr/include/glib-2.0/gobject -L/usr/lib64
 #flag -lgobject-2.0
 
+pub struct C.g_error {}
+
 fn init() {
 	// init module if necessary
 }
 
 type G_destroy_notify = voidptr
+
+pub struct Error {
+	pub: ref &C.g_error
+}

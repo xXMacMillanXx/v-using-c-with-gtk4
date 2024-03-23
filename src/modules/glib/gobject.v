@@ -4,7 +4,7 @@ module glib
 
 pub type G_callback = fn (...voidptr)
 
-struct C.g_object {}
+pub struct C.g_object {}
 
 fn C.g_signal_connect(voidptr, &char, G_callback, voidptr)
 fn C.g_signal_connect_swapped(voidptr, &char, G_callback, voidptr)

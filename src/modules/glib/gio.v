@@ -23,11 +23,11 @@ fn C.g_application_run(&C.g_application, int, &&char) int
 fn C.g_application_command_line_get_arguments(&C.g_application_command_line, int) &&char
 
 pub struct Application {
-	ref &C.g_application
+	pub: ref &C.g_application
 }
 
 pub struct CommandLine {
-	ref &C.g_application_command_line
+	pub: ref &C.g_application_command_line
 }
 
 fn convert_string_array_to_char_pointer_pointer(str_arr []string) &&char {

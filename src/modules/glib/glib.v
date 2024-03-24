@@ -17,3 +17,11 @@ type G_destroy_notify = voidptr
 pub struct Error {
 	pub: ref &C.g_error
 }
+
+pub fn object(ptr voidptr) Object {
+	return Object { unsafe { &C.g_object(ptr) } }
+}
+
+pub fn application(ptr voidptr) Application {
+	return Application { unsafe { &C.g_application(ptr) } }
+}

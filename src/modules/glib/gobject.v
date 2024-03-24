@@ -15,10 +15,6 @@ pub struct Object {
 	pub: ref &C.g_object
 }
 
-pub fn object(ptr voidptr) Object {
-	return Object { unsafe { &C.g_object(ptr) } }
-}
-
 pub fn signal_connect(app voidptr, event string, action G_callback, data voidptr) {
 	C.g_signal_connect(app, event.str, action, data)
 }

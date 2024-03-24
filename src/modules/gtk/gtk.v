@@ -39,6 +39,14 @@ pub struct GtkBuilder {
 	pub: ref &C.gtk_builder
 }
 
+pub fn window(ptr voidptr) Window {
+	return Window { unsafe { &C.gtk_window(ptr) } }
+}
+
+pub fn widget(ptr voidptr) Widget {
+	return Widget { unsafe { &C.gtk_widget(ptr) } }
+}
+
 pub fn builder_new() GtkBuilder {
 	return GtkBuilder{ C.gtk_builder_new() }
 }

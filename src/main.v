@@ -17,6 +17,31 @@ fn print_hello() {
 	println('Hello World!')
 }
 
+fn quit_cb(window gtk.Window) {
+	gtk.window_close(window)
+}
+
+fn activate(app gtk.Application, data voidptr) {
+	builder := gtk.builder_new()
+	gtk.builder_add_from_file(builder, 'src/builder.ui', glib.Error { unsafe { nil } })
+
+	window := gtk.builder_get_object(builder, 'window')
+	gtk.window_set_application(gtk.window(window.ref), app)
+
+	mut button := gtk.builder_get_object(builder, 'button1')
+	glib.signal_connect(button.ref, "clicked", unsafe { glib.G_callback(print_hello) }, unsafe { nil })
+	
+	button = gtk.builder_get_object(builder, 'button2')
+	glib.signal_connect(button.ref, "clicked", unsafe { glib.G_callback(print_hello) }, unsafe { nil })
+	
+	button = gtk.builder_get_object(builder, 'quit')
+	glib.signal_connect_swapped(button.ref, "clicked", unsafe { glib.G_callback(quit_cb) }, window.ref)
+
+	gtk.widget_set_visible(gtk.widget(window.ref), true)
+
+	glib.object_unref(glib.object(builder.ref))
+}
+
 fn on_activate(app gtk.Application) {
 	window := gtk.application_window_new(app)
 	mut button := gtk.button_new_with_label('Button 1')
@@ -64,8 +89,9 @@ fn main() {
 	println('App started!')
 	
 	app := gtk.application_new('com.example.GtkApplication', glib.G_application_flags.flags_none)
-	glib.signal_connect(app.ref, 'activate', unsafe { glib.G_callback(on_activate) }, unsafe { nil })
+	//glib.signal_connect(app.ref, 'activate', unsafe { glib.G_callback(on_activate) }, unsafe { nil })
 	//glib.signal_connect(app.ref, "command-line", unsafe { glib.G_callback(command_line) }, unsafe { nil });
+	glib.signal_connect(app.ref, 'activate', unsafe { glib.G_callback(activate) }, unsafe { nil })
 	state := glib.application_run(app.application(), os.args.len, os.args)
 	glib.object_unref(app.object())
 

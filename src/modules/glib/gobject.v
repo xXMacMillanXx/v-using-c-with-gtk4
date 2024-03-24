@@ -12,7 +12,11 @@ fn C.g_signal_connect_after(voidptr, &char, G_callback, voidptr)
 fn C.g_object_unref(&C.g_object)
 
 pub struct Object {
-	ref &C.g_object
+	pub: ref &C.g_object
+}
+
+pub fn object(ptr voidptr) Object {
+	return Object { unsafe { &C.g_object(ptr) } }
 }
 
 pub fn signal_connect(app voidptr, event string, action G_callback, data voidptr) {

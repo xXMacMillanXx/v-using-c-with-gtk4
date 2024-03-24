@@ -47,6 +47,26 @@ pub fn widget(ptr voidptr) Widget {
 	return Widget { unsafe { &C.gtk_widget(ptr) } }
 }
 
+pub fn box(ptr voidptr) Box {
+	return Box { unsafe { &C.gtk_box(ptr) } }
+}
+
+pub fn grid(ptr voidptr) Grid {
+	return Grid { unsafe { &C.gtk_grid(ptr) } }
+}
+
+pub fn frame(ptr voidptr) Frame {
+	return Frame { unsafe { &C.gtk_frame(ptr) } }
+}
+
+pub fn drawing_area(ptr voidptr) DrawingArea {
+	return DrawingArea { unsafe { &C.gtk_drawing_area(ptr) } }
+}
+
+pub fn event_controller(ptr voidptr) EventController {
+	return EventController { unsafe { &C.gtk_event_controller(ptr) } }
+}
+
 pub fn builder_new() GtkBuilder {
 	return GtkBuilder{ C.gtk_builder_new() }
 }

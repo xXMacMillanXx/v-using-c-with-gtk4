@@ -4,6 +4,8 @@ module glib
 
 struct C.g_application {}
 struct C.g_application_command_line {}
+pub struct C.g_input_stream {}
+pub struct C.g_cancellable {}
 
 pub enum G_application_flags {
 	flags_none = 0
@@ -21,6 +23,7 @@ pub enum G_application_flags {
 
 fn C.g_application_run(&C.g_application, int, &&char) int
 fn C.g_application_command_line_get_arguments(&C.g_application_command_line, int) &&char
+fn C.g_memory_input_stream_new_from_data(voidptr, int, G_destroy_notify) &C.g_input_stream
 
 pub struct Application {
 	pub: ref &C.g_application
@@ -28,6 +31,14 @@ pub struct Application {
 
 pub struct CommandLine {
 	pub: ref &C.g_application_command_line
+}
+
+pub struct InputStream {
+	pub: ref &C.g_input_stream
+}
+
+pub struct Cancellable {
+	pub: ref &C.g_cancellable
 }
 
 fn convert_string_array_to_char_pointer_pointer(str_arr []string) &&char {
@@ -56,4 +67,8 @@ pub fn application_command_line_get_arguments(cmd CommandLine) []string {
 		ret << unsafe { cstring_to_vstring(argv[i]) }
 	}
 	return ret
+}
+
+pub fn input_stream_new_from_data(data voidptr, len int, destroy G_destroy_notify) InputStream {
+	return InputStream { C.g_memory_input_stream_new_from_data(data, len, destroy) }
 }

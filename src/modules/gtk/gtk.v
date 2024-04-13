@@ -6,7 +6,6 @@ import glib
 
 #flag -I/usr/include/gtk-4.0 -L/usr/lib64
 #flag -lgtk-4
-#flag -I/usr/include/gdk-pixbuf-2.0 -L/usr/lib64
 
 #include "gtk/gtk.h"
 
@@ -49,6 +48,12 @@ pub fn window(ptr voidptr) Window {
 // and returns it as a `gtk.Widget` struct
 pub fn widget(ptr voidptr) Widget {
 	return Widget { unsafe { &C.gtk_widget(ptr) } }
+}
+
+// image casts the given pointer `ptr` to a gtk image pointer
+// and returns it as a `gtk.Image` struct
+pub fn image(ptr voidptr) Image {
+	return Image { unsafe { &C.gtk_image(ptr) } }
 }
 
 // box casts the given pointer `ptr` to a gtk box pointer

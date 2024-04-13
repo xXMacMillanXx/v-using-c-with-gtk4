@@ -12,7 +12,7 @@ fn init() {
 	// init module if necessary
 }
 
-type G_destroy_notify = voidptr
+pub type G_destroy_notify = voidptr
 
 pub struct Error {
 	pub: ref &C.g_error

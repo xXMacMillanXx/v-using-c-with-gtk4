@@ -11,6 +11,7 @@ pub struct Application {
 	pub: ref &C.gtk_application
 }
 
+// maybe I have to explicitly cast the enum to an int?
 pub fn application_new(s string, f glib.G_application_flags) Application {
 	return Application { C.gtk_application_new(s.str, f) }
 }

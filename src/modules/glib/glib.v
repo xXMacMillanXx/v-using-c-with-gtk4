@@ -5,6 +5,7 @@ module glib
 #flag -lglib-2.0
 #flag -I/usr/include/glib-2.0/gobject -L/usr/lib64
 #flag -lgobject-2.0
+#flag -lgio-2.0
 
 pub struct C.g_error {}
 

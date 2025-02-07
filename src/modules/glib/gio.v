@@ -42,7 +42,7 @@ pub struct Cancellable {
 }
 
 fn convert_string_array_to_char_pointer_pointer(str_arr []string) &&char {
-	pre_ret := unsafe { vcalloc(sizeof(&char) * str_arr.len) }
+	pre_ret := unsafe { vcalloc(sizeof(&char) * u32(str_arr.len)) }
 	for i, str in str_arr {
 		chars := str.str
 		unsafe {

@@ -56,6 +56,42 @@ pub fn image(ptr voidptr) Image {
 	return Image { unsafe { &C.gtk_image(ptr) } }
 }
 
+// entry casts the given pointer `ptr` to a gtk entry pointer
+// and returns it as a `gtk.Entry` struct
+pub fn entry(ptr voidptr) Entry {
+	return Entry { unsafe { &C.gtk_entry(ptr) } }
+}
+
+// list_box casts the given pointer `ptr` to a gtk list_box pointer
+// and returns it as a `gtk.ListBox` struct
+pub fn list_box(ptr voidptr) ListBox {
+	return ListBox { unsafe { &C.gtk_list_box(ptr) } }
+}
+
+// list_box_row casts the given pointer `ptr` to a gtk list_box_row pointer
+// and returns it as a `gtk.ListBoxRow` struct
+pub fn list_box_row(ptr voidptr) ListBoxRow {
+	return ListBoxRow { unsafe { &C.gtk_list_box_row(ptr) } }
+}
+
+// text casts the given pointer `ptr` to a gtk text pointer
+// and returns it as a `gtk.Text` struct
+pub fn text(ptr voidptr) Text {
+	return Text { unsafe { &C.gtk_text(ptr) } }
+}
+
+// label casts the given pointer `ptr` to a gtk label pointer
+// and returns it as a `gtk.Label` struct
+pub fn label(ptr voidptr) Label {
+	return Label { unsafe { &C.gtk_label(ptr) } }
+}
+
+// check_button casts the given pointer `ptr` to a gtk check_button pointer
+// and returns it as a `gtk.CheckButton` struct
+pub fn check_button(ptr voidptr) CheckButton {
+	return CheckButton { unsafe { &C.gtk_check_button(ptr) } }
+}
+
 // box casts the given pointer `ptr` to a gtk box pointer
 // and returns it as a `gtk.Box` struct
 pub fn box(ptr voidptr) Box {

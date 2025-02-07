@@ -3,24 +3,22 @@ module main
 import gtk
 import glib
 import pixbuff
-// import cairo
+import cairo
+// the three imports below are needed for includes
+import pango
+import harfbuzz
+import graphene
+
 import os
 import net.http
 
-#flag -I/usr/include/pango-1.0 -L/usr/lib64
-#flag -lpango-1.0
-#flag -I/usr/include/harfbuzz -L/usr/lib64
-#flag -lharfbuzz
-#flag -I/usr/include/graphene-1.0 -L/usr/lib64
-#flag -I/lib64/graphene-1.0/include -L/usr/lib64
-#flag -lgraphene-1.0
 
 fn print_hello() {
 	println('Hello World!')
 }
 
-fn quit_cb(window gtk.Window) {
-	gtk.window_close(window)
+fn quit_cb(widget gtk.Widget, window gtk.Widget) {
+	gtk.window_close(gtk.window(window.ref))
 }
 
 fn activate(app gtk.Application, data voidptr) {
@@ -32,10 +30,10 @@ fn activate(app gtk.Application, data voidptr) {
 
 	mut button := gtk.builder_get_object(builder, 'button1')
 	glib.signal_connect(button.ref, "clicked", unsafe { glib.G_callback(print_hello) }, unsafe { nil })
-	
+
 	button = gtk.builder_get_object(builder, 'button2')
 	glib.signal_connect(button.ref, "clicked", unsafe { glib.G_callback(print_hello) }, unsafe { nil })
-	
+
 	button = gtk.builder_get_object(builder, 'quit')
 	glib.signal_connect_swapped(button.ref, "clicked", unsafe { glib.G_callback(quit_cb) }, window.ref)
 
@@ -55,11 +53,11 @@ fn on_activate(app gtk.Application) {
 
 	//gtk.widget_set_halign(box, gtk.Gtk_align.center)
 	//gtk.widget_set_valign(box, gtk.Gtk_align.center)
-	
+
 	//gtk.window_set_child(gtk.window(window.ref), box)
 
 	gtk.window_set_child(gtk.window(window.ref), grid)
-	
+
 	glib.signal_connect(button.ref, 'clicked', unsafe { glib.G_callback(print_hello) }, unsafe { nil })
 
 	gtk.grid_attach(gtk.grid(grid.ref), button, 0, 0, 1, 1)
@@ -89,7 +87,7 @@ fn on_activate_image(app gtk.Application) {
 
 	gtk.widget_set_halign(box, gtk.Gtk_align.center)
 	gtk.widget_set_valign(box, gtk.Gtk_align.center)
-	
+
 	gtk.window_set_child(gtk.window(window.ref), box)
 
 	// get image from url
@@ -118,7 +116,7 @@ fn command_line(app glib.Application, cmd glib.CommandLine) int {
 // current step #drawing in response to input
 fn main() {
 	println('App started!')
-	
+
 	app := gtk.application_new('com.example.GtkApplication', glib.G_application_flags.flags_none)
 	//app := gtk.application_new('com.example.GtkApplication', glib.G_application_flags.handles_command_line)
 	//glib.signal_connect(app.ref, 'activate', unsafe { glib.G_callback(on_activate) }, unsafe { nil })
